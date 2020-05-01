@@ -12,6 +12,7 @@ import { store, persistor } from './redux/store';
 
 import './index.css';
 import App from './App';
+import { resolvers, typeDefs } from './graphql/resolvers'
 
 const httpLink = createHttpLink({
   uri: 'https://crwn-clothing.com'
@@ -21,7 +22,18 @@ const cache = new InMemoryCache();
 
 const client = new ApolloClient({
   link: httpLink,
-  cache
+  cache,
+  typeDefs,
+  resolvers
+})
+
+// Cache - local Storage
+client.writeData({
+  data: {
+    cartHidden: true,
+    cartItems: [],
+    itemCount: 0
+  }
 })
 
 ReactDOM.render(
